@@ -8,11 +8,6 @@ import java.util.*;
 
 public class HyperProperties {
     public static void main(String[] args) throws FileNotFoundException {
-        File file = new File("/home/yue/test.properties");
-        List<String> strings = new ArrayList<>();
-        strings.add("w");
-        strings.add("test");
-        System.out.println(new HyperProperties(file).getPropValueOfNullable(strings));
     }
 
     /**
@@ -234,8 +229,6 @@ public class HyperProperties {
         }
         return key;
     }
-
-
 
     /**
      * Create Properties.
