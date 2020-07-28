@@ -231,6 +231,138 @@ public class HyperProperties {
     }
 
     /**
+     * show all key.
+     */
+    public void showAllKey() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+        try (FileInputStream in = new FileInputStream(file)){
+            properties.load(in);
+            Set<Object> set = properties.keySet();
+
+            set.forEach((k) -> {
+                String key = (String)k;
+                System.out.println(key);
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * get all key.
+     * @return String
+     */
+    public String getAllKey() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+
+        StringBuilder builder = new StringBuilder();
+        try (FileInputStream in = new FileInputStream(file)){
+            properties.load(in);
+            Set<Object> set = properties.keySet();
+
+            set.forEach((k) -> {
+                String key = (String)k;
+                builder.append(key).append("\n");
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
+    }
+
+    /**
+     * show all value.
+     */
+    public void showAllValue() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+        try (FileInputStream in = new FileInputStream(file)){
+            properties.load(in);
+            Set<Object> set = properties.keySet();
+
+            set.forEach((k) -> {
+                String key = (String)k;
+                System.out.println(properties.getProperty(key));
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * get all value.
+     * @return String
+     */
+    public String getAllValue() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+
+        StringBuilder builder = new StringBuilder();
+        try (FileInputStream in = new FileInputStream(file)){
+            properties.load(in);
+            Set<Object> set = properties.keySet();
+
+            set.forEach((k) -> {
+                String key = (String)k;
+                builder.append(properties.getProperty(key)).append("\n");
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
+    }
+
+    /**
+     * show all key and value.
+     */
+    public void showAll() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+        try (FileInputStream in = new FileInputStream(file)){
+            properties.load(in);
+            Set<Object> set = properties.keySet();
+
+            set.forEach((k) -> {
+                String key = (String)k;
+                System.out.println(key+ ": " + properties.getProperty(key));
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * get all key and value.
+     * @return String
+     */
+    public String getAll() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+
+        StringBuilder builder = new StringBuilder();
+        try (FileInputStream in = new FileInputStream(file)){
+            properties.load(in);
+            Set<Object> set = properties.keySet();
+
+            set.forEach((k) -> {
+                String key = (String)k;
+                builder.append(key+ ": " + properties.getProperty(key)).append("\n");
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
+    }
+
+    /**
      * Create Properties.
      * @param key Key
      * @param value Value
