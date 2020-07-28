@@ -13,12 +13,13 @@ import java.util.Map;
 import java.util.Properties;
 
 public class HyperProperties {
-
-    private File file = null;
-
     public static void main(String[] args) {
-
     }
+
+    /**
+     * File
+     */
+    private File file = null;
 
     public HyperProperties(File file) {
         this.file = file;
