@@ -3,17 +3,16 @@ package com.yue.Hyper;
 import com.yue.Hyper.Exception.FileNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.io.*;
+import java.util.*;
 
 public class HyperProperties {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("/home/yue/test.properties");
+        List<String> strings = new ArrayList<>();
+        strings.add("w");
+        strings.add("test");
+        System.out.println(new HyperProperties(file).getPropValueOfNullable(strings));
     }
 
     /**
@@ -91,10 +90,10 @@ public class HyperProperties {
 
             StringBuilder builder = new StringBuilder();
 
-            for (String key : keys) {
+            keys.forEach((key) -> {
                 if (properties.getProperty(key.toLowerCase()) != null)
                     builder.append(key.toLowerCase()).append(": ").append(properties.getProperty(key.toLowerCase())).append("\n");
-            }
+            });
 
             return builder.toString();
         } catch (IOException e) {
@@ -137,10 +136,8 @@ public class HyperProperties {
 
             StringBuilder builder = new StringBuilder();
 
-            for (String key : keys) {
-                builder.append(key.toLowerCase()).append(": ").append(
-                        properties.getProperty(key.toLowerCase(), "Can't get the value from Key [" + key.toLowerCase() +"]")).append("\n");
-            }
+            keys.forEach((key) -> builder.append(key.toLowerCase()).append(": ").append(
+                    properties.getProperty(key.toLowerCase(), "Can't get the value from Key [" + key.toLowerCase() +"]")).append("\n"));
 
             return builder.toString();
         } catch (IOException e) {
@@ -156,7 +153,7 @@ public class HyperProperties {
      * @return value or null
      * @throws FileNotFoundException if file is not exists
      */
-    public @NotNull String getPropValue(String key) throws FileNotFoundException {
+    public String getPropValue(String key) throws FileNotFoundException {
         if(!file.exists())
             throw new FileNotFoundException("The File in \"" + file + "\" is exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
@@ -175,7 +172,7 @@ public class HyperProperties {
      * @return list or null
      * @throws FileNotFoundException if file is not exists
      */
-    public @NotNull List<String> getPropValue(List<String> keys) throws FileNotFoundException {
+    public List<String> getPropValue(List<String> keys) throws FileNotFoundException {
         List<String> list = new ArrayList<>();
 
         if(!file.exists())
@@ -183,10 +180,10 @@ public class HyperProperties {
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
-            for (String key : keys) {
+            keys.forEach((key) -> {
                 if (properties.getProperty(key.toLowerCase()) != null)
                     list.add(properties.getProperty(key.toLowerCase()));
-            }
+            });
 
             return list;
         } catch (IOException e) {
@@ -209,17 +206,14 @@ public class HyperProperties {
             throw new FileNotFoundException("The File in \"" + file + "\" is exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
-
-            for (String key : keys) {
-                list.add(properties.getProperty(key.toLowerCase(), "Can't get the value from Key [" + key.toLowerCase() +"]"));
-            }
+            keys.forEach((key) -> list.add(properties.getProperty(key.toLowerCase(), "Can't get the value from Key [" + key.toLowerCase() +"]")));
 
             return list;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return keys;
     }
 
     /**
@@ -238,7 +232,7 @@ public class HyperProperties {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return key;
     }
 
 
@@ -270,13 +264,9 @@ public class HyperProperties {
      * @return File exist, return false, else create the properties file and return true
      */
     public boolean createProp(Map<String, String> map) {
-        if(!file.exists()) {
+        if (!file.exists()) {
             try (FileOutputStream out = new FileOutputStream(file)) {
-
-                for(String key : map.keySet()) {
-                    properties.setProperty(key.toLowerCase(), map.get(key));
-                }
-
+                map.forEach((key, value) -> properties.setProperty(key.toLowerCase(), value));
                 properties.store(out, null);
             } catch (IOException e) {
                 e.printStackTrace();
