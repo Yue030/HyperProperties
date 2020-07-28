@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="HyperProperties:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/HyperProperties_jar</output-path>
+    <root id="archive" name="HyperProperties.jar">
+      <element id="module-output" name="HyperProperties" />
+    </root>
+  </artifact>
+</component>
