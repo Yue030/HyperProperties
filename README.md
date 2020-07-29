@@ -27,7 +27,7 @@ Use "HyperProperties (name) = new NullableHyperProperties()"
 
 -> To create the object.
 
-  -> If you use this constuctor, You need to use (name).setFile(File file).
+-----> If you use this constuctor, You need to use (name).setFile(File file).
 
 Use "HyperProperties (name) = new BasicHyperProperties(File file)"
 
