@@ -8,31 +8,38 @@ BasicHyperProperties
 
 NullableHyperProperties
 
-# BasicHyperProperties
+# BasicHyperProperties (中文)
 
 必須在實例化BasicHyperProperties物件時，輸入File型別的變數。
 
-Must be input a file var when you instance a BasicHyperProperties Object.
 
 使用 "HyperProperties (name) = new BasicHyperProperties(File file)"
 
 -> 來實例一個物件。
 
-Using "HyperProperties (name) = new BasicHyperProperties(File file)"
-
--> To create the object.
 
 使用 "HyperProperties (name) = new BasicHyperProperties(File file, String key, String value)"
 
 -> 來實例一個物件，並呼叫 createProp(String key, String value) 方法。
 
-Using "HyperProperties (name) = new BasicHyperProperties(File file, String key, String value)"
-
--> To create the object and call method createProp(String key, String value).
 
 使用 "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, String>)"
 
 -> 來實例一個物件，並呼叫 createProp(Map<String, String>) 方法。
+
+# BasicHyperProperties (English)
+
+Must be input a file var when you instance a BasicHyperProperties Object.
+
+
+Using "HyperProperties (name) = new BasicHyperProperties(File file)"
+
+-> To create the object.
+
+Using "HyperProperties (name) = new BasicHyperProperties(File file, String key, String value)"
+
+-> To create the object and call method createProp(String key, String value).
+
 
 Using "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, String>)"
 
