@@ -28,7 +28,6 @@ NullableHyperProperties (可允許Null版本)
 -> 來實例一個物件，並呼叫 createProp(Map<String, String>) 方法。
 
 # BasicHyperProperties (English)
-
 Must be input a file var when you instance a BasicHyperProperties Object.
 
 
