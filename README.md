@@ -11,7 +11,9 @@ Use "HyperProperties (name) = new BasicHyperProperties(File file)"
 
 -> to create the object.
 
+Use "HyperProperties (name) = new BasicHyperProperties(File file, String key, String value)"
 
+-> to create the object and call method createProp(String key, String value).
 
 Use "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, String>)"
 
