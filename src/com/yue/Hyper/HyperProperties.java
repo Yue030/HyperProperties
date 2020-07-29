@@ -20,28 +20,28 @@ public class HyperProperties {
      * @param file FileURL
      */
     public HyperProperties(File file) {
-        this.file = file;
+        setFile(file);
     }
 
     /**
-     * Constructor and Create Properties.
+     * Constructor and call {@link #createProp(String, String)}.
      * @param file File URL
      * @param key Key
      * @param value Value
      */
     public HyperProperties(File file, String key, String value) {
-        this.file = file;
-        this.createProp(key, value);
+        setFile(file);
+        createProp(key, value);
     }
 
     /**
-     * Constructor and Create Properties.
+     * nstructor cand all {@link #createProp(Map)}.
      * @param file File URL
      * @param map Map
      */
     public HyperProperties(File file, Map<String, String> map) {
-        this.file = file;
-        this.createProp(map);
+        setFile(file);
+        createProp(map);
     }
 
     /**
