@@ -3,10 +3,10 @@ HyperProperties API。讓Properties更簡單！！！
 
 HyperProperties API. Make Properties to easy!!!
 
-# Properties Object
-BasicHyperProperties
+# HyperProperties Object (HypreProperties 物件)
+BasicHyperProperties (標準版)
 
-NullableHyperProperties
+NullableHyperProperties (可允許Null版本)
 
 # BasicHyperProperties (中文)
 
