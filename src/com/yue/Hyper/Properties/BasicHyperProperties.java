@@ -1,15 +1,12 @@
-package com.yue.Hyper.Exception.Properties;
+package com.yue.Hyper.Properties;
 
+import com.yue.Hyper.Exception.FileNotFoundException;
 import com.yue.Hyper.HyperProperties;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-public class NullableHyperProperties implements HyperProperties {
-
+public class BasicHyperProperties implements HyperProperties {
     /**
      * File
      */
@@ -17,16 +14,9 @@ public class NullableHyperProperties implements HyperProperties {
 
     /**
      * Constructor.
-     */
-    public NullableHyperProperties() {
-        setFile(null);
-    }
-
-    /**
-     * Constructor.
      * @param file FileURL
      */
-    public NullableHyperProperties(File file) {
+    public BasicHyperProperties(File file) {
         setFile(file);
     }
 
@@ -36,7 +26,7 @@ public class NullableHyperProperties implements HyperProperties {
      * @param key Key
      * @param value Value
      */
-    public NullableHyperProperties(File file, String key, String value) {
+    public BasicHyperProperties(File file, String key, String value) {
         setFile(file);
         createProp(key, value);
     }
@@ -46,7 +36,7 @@ public class NullableHyperProperties implements HyperProperties {
      * @param file File URL
      * @param map Map
      */
-    public NullableHyperProperties(File file, Map<String, String> map) {
+    public BasicHyperProperties(File file, Map<String, String> map) {
         setFile(file);
         createProp(map);
     }
@@ -87,24 +77,21 @@ public class NullableHyperProperties implements HyperProperties {
     }
 
     /**
-     * read Properties File URL (Nullable)
+     * read Properties File URL
      *
      * @param key String
      * @return String
      */
     @Override
-    public String readProp(String key) {
-        try (FileInputStream inputStream = new FileInputStream(file)) {
+    public String readProp(String key) throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+        try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
-            StringBuilder builder = new StringBuilder();
-
-            if (properties.getProperty(key.toLowerCase()) != null)
-                builder.append(key.toLowerCase()).append("=").append(properties.getProperty(key.toLowerCase())).append("\n");
-
-            return builder.toString();
-        } catch (NullPointerException e) {
-            return "File is Not Exist on method \"readProp(String key)\"";
+            return key.toLowerCase() + "=" +
+                    properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]")
+                    + "\n";
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,26 +100,24 @@ public class NullableHyperProperties implements HyperProperties {
     }
 
     /**
-     * read Properties File URL (Nullable)
+     * read Properties File URL
      *
      * @param keys List
      * @return String
      */
     @Override
-    public String readProp(List<String> keys) {
-        try (FileInputStream inputStream = new FileInputStream(file)) {
+    public String readProp(List<String> keys) throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+        try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
             StringBuilder builder = new StringBuilder();
 
-            keys.forEach((key) -> {
-                if (properties.getProperty(key.toLowerCase()) != null)
-                    builder.append(key.toLowerCase()).append("=").append(properties.getProperty(key.toLowerCase())).append("\n");
-            });
+            keys.forEach((key) -> builder.append(key.toLowerCase()).append("=").append(
+                    properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]")).append("\n"));
 
             return builder.toString();
-        } catch (NullPointerException e) {
-            return "File is Not Exist on method \"readProp(List<String> keys)\"";
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,65 +126,66 @@ public class NullableHyperProperties implements HyperProperties {
     }
 
     /**
-     * Get properties value. (Nullable)
+     * Get properties value.
      *
      * @param key Key
      * @return value or null
+     * @throws FileNotFoundException if file is not exists
      */
     @Override
-    public String getPropValue(String key) {
-        try (FileInputStream inputStream = new FileInputStream(file)) {
+    public String getPropValue(String key) throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+        try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
-            return properties.getProperty(key.toLowerCase());
-        } catch (NullPointerException e) {
-            return "File is Not Exist on method \"getPropValue(String key)\"";
+            return properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return key;
+        return null;
     }
 
     /**
-     * Get properties value. (Nullable)
+     * Get properties value.
      *
      * @param keys Keys List
      * @return list or null
+     * @throws FileNotFoundException if file is not exists
      */
     @Override
-    public List<String> getPropValue(List<String> keys) {
+    public List<String> getPropValue(List<String> keys) throws FileNotFoundException {
         List<String> list = new ArrayList<>();
-        try (FileInputStream inputStream = new FileInputStream(file)) {
+
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+        try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
-            keys.forEach((key) -> {
-                if (properties.getProperty(key.toLowerCase()) != null)
-                    list.add(properties.getProperty(key.toLowerCase()));
-            });
-            return list;
-        } catch (NullPointerException e) {
+            keys.forEach((key) -> list.add(properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]")));
             return list;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return list;
+        return null;
     }
 
     /**
      * show all key.
      */
     @Override
-    public void showAllKey() {
-        try (FileInputStream in = new FileInputStream(file)) {
+    public void showAllKey() throws FileNotFoundException {
+        if (!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+        try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
 
             set.forEach((k) -> {
-                String key = (String) k;
+                String key = (String)k;
                 System.out.println(key);
             });
-        } catch (NullPointerException e) {
-            System.out.println("File is not exist on method \"showAllKey()\"");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -211,18 +197,20 @@ public class NullableHyperProperties implements HyperProperties {
      * @return List
      */
     @Override
-    public List<String> getAllKey() {
+    public List<String> getAllKey() throws FileNotFoundException {
         List<String> list = new ArrayList<>();
-        try (FileInputStream in = new FileInputStream(file)) {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+
+        try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
 
             set.forEach((k) -> {
-                String key = (String) k;
+                String key = (String)k;
                 list.add(key);
             });
-        } catch (NullPointerException e) {
-            return list;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -233,7 +221,9 @@ public class NullableHyperProperties implements HyperProperties {
      * show all value.
      */
     @Override
-    public void showAllValue() {
+    public void showAllValue() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -242,8 +232,7 @@ public class NullableHyperProperties implements HyperProperties {
                 String key = (String)k;
                 System.out.println(properties.getProperty(key));
             });
-        } catch (NullPointerException e) {
-            System.out.println("File is Not Exist on method \"showAllValue()\"");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -255,8 +244,11 @@ public class NullableHyperProperties implements HyperProperties {
      * @return List
      */
     @Override
-    public List<String> getAllValue() {
+    public List<String> getAllValue() throws FileNotFoundException {
         List<String> list = new ArrayList<>();
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -265,8 +257,7 @@ public class NullableHyperProperties implements HyperProperties {
                 String key = (String)k;
                 list.add(properties.getProperty(key));
             });
-        } catch (NullPointerException e) {
-            return list;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -277,21 +268,21 @@ public class NullableHyperProperties implements HyperProperties {
      * show all key and value.
      */
     @Override
-    public void showAll() {
+    public void showAll() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
 
             set.forEach((k) -> {
-                String key = (String) k;
-                System.out.println(key + ": " + properties.getProperty(key));
+                String key = (String)k;
+                System.out.println(key+ ": " + properties.getProperty(key));
             });
-        } catch (NullPointerException e) {
-            System.out.println("File is Not Exist on method \"showAll()\"");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -300,19 +291,21 @@ public class NullableHyperProperties implements HyperProperties {
      * @return String
      */
     @Override
-    public Map<Object, Object> getAll() {
-        Set<Object> set = properties.keySet();
-        Map<Object, Object> map = new HashMap<>();
+    public Map<Object, Object> getAll() throws FileNotFoundException {
+        if(!file.exists())
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
+            Set<Object> set = properties.keySet();
+            Map<Object, Object> map = new HashMap<>();
             set.forEach((o -> map.put(o, properties.get(o))));
 
-            return map;
-        } catch (NullPointerException e) {
             return map;
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -325,18 +318,16 @@ public class NullableHyperProperties implements HyperProperties {
      */
     @Override
     public boolean createProp(String key, String value) {
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            if (!file.exists()) {
+        if(!file.exists()) {
+            try (FileOutputStream out = new FileOutputStream(file)) {
                 properties.setProperty(key.toLowerCase(), value);
-                properties.store(out, null);
 
-                return true;
+                properties.store(out, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
-        } catch (NullPointerException e) {
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            return true;
         }
         return false;
     }
@@ -349,18 +340,15 @@ public class NullableHyperProperties implements HyperProperties {
      */
     @Override
     public boolean createProp(Map<String, String> map) {
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            if (!file.exists()) {
+        if (!file.exists()) {
+            try (FileOutputStream out = new FileOutputStream(file)) {
                 map.forEach((key, value) -> properties.setProperty(key.toLowerCase(), value));
                 properties.store(out, null);
-
-                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
-        } catch (NullPointerException e) {
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            return true;
         }
         return false;
     }
@@ -372,11 +360,9 @@ public class NullableHyperProperties implements HyperProperties {
      */
     @Override
     public boolean removeProp() {
-        try {
-            return file.delete();
-        } catch (NullPointerException e) {
+        if (!file.exists())
             return false;
-        }
+        return file.delete();
     }
 
     /**
@@ -385,6 +371,11 @@ public class NullableHyperProperties implements HyperProperties {
      */
     @Override
     public String toString() {
-        return this.getAll().toString();
+        try {
+            return this.getAll().toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
