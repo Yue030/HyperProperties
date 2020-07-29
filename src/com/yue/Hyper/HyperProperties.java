@@ -259,7 +259,7 @@ public class HyperProperties {
      * show all key.
      */
     public void showAllKey() throws FileNotFoundException {
-        if(!file.exists())
+        if (!file.exists())
             throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
