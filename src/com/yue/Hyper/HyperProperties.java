@@ -15,8 +15,33 @@ public class HyperProperties {
      */
     private File file = null;
 
+    /**
+     * Constructor.
+     * @param file FileURL
+     */
     public HyperProperties(File file) {
         this.file = file;
+    }
+
+    /**
+     * Constructor and Create Properties.
+     * @param file File URL
+     * @param key Key
+     * @param value Value
+     */
+    public HyperProperties(File file, String key, String value) {
+        this.file = file;
+        this.createProp(key, value);
+    }
+
+    /**
+     * Constructor and Create Properties.
+     * @param file File URL
+     * @param map Map
+     */
+    public HyperProperties(File file, Map<String, String> map) {
+        this.file = file;
+        this.createProp(map);
     }
 
     /**
@@ -55,7 +80,7 @@ public class HyperProperties {
      */
     public @NotNull String readProp(String key) throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
@@ -79,7 +104,7 @@ public class HyperProperties {
      */
     public @NotNull String readProp(List<String> keys) throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
@@ -105,7 +130,7 @@ public class HyperProperties {
      */
     public @NotNull String readPropOfNullable(String key) throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
             return key.toLowerCase() + ": " +
@@ -125,7 +150,7 @@ public class HyperProperties {
      **/
     public @NotNull String readPropOfNullable(List<String> keys) throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
@@ -150,7 +175,7 @@ public class HyperProperties {
      */
     public String getPropValue(String key) throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
@@ -171,7 +196,7 @@ public class HyperProperties {
         List<String> list = new ArrayList<>();
 
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
@@ -198,7 +223,7 @@ public class HyperProperties {
         List<String> list = new ArrayList<>();
 
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
             keys.forEach((key) -> list.add(properties.getProperty(key.toLowerCase(), "Can't get the value from Key [" + key.toLowerCase() +"]")));
@@ -219,7 +244,7 @@ public class HyperProperties {
      */
     public @NotNull String getPropValueOfNullable(String key) throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
@@ -235,7 +260,7 @@ public class HyperProperties {
      */
     public void showAllKey() throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -252,26 +277,26 @@ public class HyperProperties {
 
     /**
      * get all key.
-     * @return String
+     * @return List
      */
-    public String getAllKey() throws FileNotFoundException {
+    public List<String> getAllKey() throws FileNotFoundException {
+        List<String> list = new ArrayList<>();
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
 
-        StringBuilder builder = new StringBuilder();
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
 
             set.forEach((k) -> {
                 String key = (String)k;
-                builder.append(key).append("\n");
+                list.add(key);
             });
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return builder.toString();
+        return list;
     }
 
     /**
@@ -279,7 +304,7 @@ public class HyperProperties {
      */
     public void showAllValue() throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -296,26 +321,26 @@ public class HyperProperties {
 
     /**
      * get all value.
-     * @return String
+     * @return List
      */
-    public String getAllValue() throws FileNotFoundException {
+    public List<String> getAllValue() throws FileNotFoundException {
+        List<String> list = new ArrayList<>();
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
 
-        StringBuilder builder = new StringBuilder();
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
 
             set.forEach((k) -> {
                 String key = (String)k;
-                builder.append(properties.getProperty(key)).append("\n");
+                list.add(properties.getProperty(key));
             });
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return builder.toString();
+        return list;
     }
 
     /**
@@ -323,7 +348,7 @@ public class HyperProperties {
      */
     public void showAll() throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -342,24 +367,22 @@ public class HyperProperties {
      * get all key and value.
      * @return String
      */
-    public String getAll() throws FileNotFoundException {
+    public Map<Object, Object> getAll() throws FileNotFoundException {
         if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is exists");
+            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
 
-        StringBuilder builder = new StringBuilder();
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
+            Map<Object, Object> map = new HashMap<>();
+            set.forEach((o -> map.put(o, properties.get(o))));
 
-            set.forEach((k) -> {
-                String key = (String)k;
-                builder.append(key+ ": " + properties.getProperty(key)).append("\n");
-            });
-
+            return map;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return builder.toString();
+
+        return null;
     }
 
     /**
@@ -410,5 +433,19 @@ public class HyperProperties {
         if (!file.exists())
             return false;
         return file.delete();
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+    @Override
+    public String toString() {
+        try {
+            return this.getAll().toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
