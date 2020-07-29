@@ -54,6 +54,8 @@ Using "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, 
 使用 "HyperProperties (name) = new NullableHyperProperties()"
 
 -> 來實例一個物件。
+
+
 -----> 如果你使用這個建構子，你必須使用 (name).setFile(File file) 來避免空指標
 
 推薦：使用 "HyperProperties (name) = new NullableHyperProperties(File file)"
