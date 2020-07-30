@@ -55,6 +55,13 @@ public interface HyperProperties {
     List<String> getPropValue(List<String> keys) throws FileNotFoundException;
 
     /**
+     * Set property value to key, The key must be exist.
+     * @param map Map
+     * @return boolean
+     */
+    boolean setProperty(Map<String,String> map);
+
+    /**
      * show all key.
      */
     void showAllKey() throws FileNotFoundException;

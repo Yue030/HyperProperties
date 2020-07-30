@@ -2,10 +2,8 @@ package com.yue.Hyper.Properties;
 
 import com.yue.Hyper.HyperProperties;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class NullableHyperProperties implements HyperProperties {
@@ -183,6 +181,72 @@ public class NullableHyperProperties implements HyperProperties {
         }
 
         return list;
+    }
+
+    /**
+     * Set property value to key, The key must be exist.
+     *
+     * @param map Map
+     * @return boolean
+     */
+    @Override
+    public boolean setProperty(Map<String, String> map) {
+        try {
+            InputStream in = new FileInputStream(file);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            StringBuffer outstr = new StringBuffer();
+            String line;
+            boolean flag = false;
+
+            while ((line = br.readLine()) != null) {
+                if (line.equals(""))
+                {
+                    outstr.append("\n");
+                } else {
+                    if (line.startsWith("#"))
+                    {
+                        outstr.append(line).append("\n");
+                    } else {
+                        String _line = line.trim();
+                        int charNum = _line.indexOf("=");
+                        if (charNum != -1) {
+                            Iterator<String> it = map.keySet().iterator();
+                            boolean find = false;
+                            while (it.hasNext()) {
+                                String key = it.next();
+                                String _key = _line.substring(0, charNum);
+                                if (_key.equals(key)) {
+                                    String _value = map.get(key) + "";
+                                    outstr.append(_key).append("=").append(_value).append("\n");
+                                    map.remove(key);
+                                    flag = true;
+                                    find = true;
+                                    break;
+                                }
+                            }
+                            if (!find) {
+                                outstr.append(line).append("\n");
+                            }
+                        } else {
+                            outstr.append(line).append("\n");
+                        }
+                    }
+                }
+            }
+            System.out.println(outstr);
+            br.close();
+            in.close();
+            if (flag) {
+                OutputStreamWriter fos = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+                BufferedWriter bw = new BufferedWriter(fos);
+                bw.write(outstr.toString());
+                bw.close();
+                fos.close();
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     /**
