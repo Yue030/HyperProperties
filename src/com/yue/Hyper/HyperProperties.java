@@ -59,7 +59,7 @@ public interface HyperProperties {
      * @param map Map
      * @return boolean
      */
-    boolean setProperty(Map<String,String> map);
+    boolean setProperty(Map<String,Object> map);
 
     /**
      * show all key.
@@ -85,9 +85,9 @@ public interface HyperProperties {
     void showAll() throws FileNotFoundException;
     /**
      * get all key and value.
-     * @return String
+     * @return map
      */
-    Map<Object, Object> getAll() throws FileNotFoundException;
+    Map<String, Object> getAll() throws FileNotFoundException;
 
     /**
      * Create Properties.
@@ -101,7 +101,7 @@ public interface HyperProperties {
      * @param map Map
      * @return File exist, return false, else create the properties file and return true
      */
-    boolean createProp(Map<String, String> map);
+    boolean createProp(Map<String, Object> map);
 
     /**
      * Remove the properties.

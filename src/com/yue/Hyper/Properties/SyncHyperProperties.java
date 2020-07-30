@@ -37,7 +37,7 @@ public class SyncHyperProperties implements HyperProperties {
      * @param file File URL
      * @param map Map
      */
-    public SyncHyperProperties(File file, Map<String, String> map) {
+    public SyncHyperProperties(File file, Map<String, Object> map) {
         setFile(file);
         createProp(map);
     }
@@ -178,7 +178,7 @@ public class SyncHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public synchronized boolean setProperty(Map<String, String> map) {
+    public synchronized boolean setProperty(Map<String, Object> map) {
         try {
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -359,14 +359,14 @@ public class SyncHyperProperties implements HyperProperties {
      * @return String
      */
     @Override
-    public synchronized Map<Object, Object> getAll() throws FileNotFoundException {
+    public synchronized Map<String, Object> getAll() throws FileNotFoundException {
         if(!file.exists())
             throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
-            Map<Object, Object> map = new HashMap<>();
-            set.forEach((o -> map.put(o, properties.get(o))));
+            Map<String, Object> map = new HashMap<>();
+            set.forEach((o -> map.put(o.toString(), properties.get(o))));
 
             return map;
         } catch (IOException e) {
@@ -406,10 +406,10 @@ public class SyncHyperProperties implements HyperProperties {
      * @return File exist, return false, else create the properties file and return true
      */
     @Override
-    public synchronized boolean createProp(Map<String, String> map) {
+    public synchronized boolean createProp(Map<String, Object> map) {
         if (!file.exists()) {
             try (FileOutputStream out = new FileOutputStream(file)) {
-                map.forEach((key, value) -> properties.setProperty(key.toLowerCase(), value));
+                map.forEach((key, value) -> properties.setProperty(key.toLowerCase(), value.toString()));
                 properties.store(out, null);
             } catch (IOException e) {
                 e.printStackTrace();

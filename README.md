@@ -29,9 +29,9 @@ SyncNullHyperProperties (Nullable版-執行序安全) (Nullable Version-Thread S
 -> 來實例一個物件，並呼叫 createProp(String key, String value) 方法。
 
 
-使用 "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, String>)"
+使用 "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, Object>)"
 
--> 來實例一個物件，並呼叫 createProp(Map<String, String>) 方法。
+-> 來實例一個物件，並呼叫 createProp(Map<String, Object>) 方法。
 
 
 SyncHyperProperties適用於本例子
@@ -51,9 +51,9 @@ Using "HyperProperties (name) = new BasicHyperProperties(File file, String key, 
 -> To create the object and call method createProp(String key, String value).
 
 
-Using "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, String>)"
+Using "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, Object>)"
 
--> To create the object and call method createProp(Map<String, String>).
+-> To create the object and call method createProp(Map<String, Object>).
 
 
 SyncHyperProperties is apply to this example
@@ -78,9 +78,9 @@ SyncHyperProperties is apply to this example
 -> 來實例一個物件，並呼叫 createProp(String key, String value) 方法。
 
 
-使用 "HyperProperties (name) = new NullableHyperProperties(File file, Map<String, String>)"
+使用 "HyperProperties (name) = new NullableHyperProperties(File file, Map<String, Object>)"
 
--> 來實例一個物件，並呼叫 createProp(Map<String, String>) 方法。
+-> 來實例一個物件，並呼叫 createProp(Map<String, Object>) 方法。
 
 
 SyncNullHyperProperties適用於本例子
@@ -103,9 +103,9 @@ Using "HyperProperties (name) = new BasicHyperProperties(File file, String key, 
 
 -> To create the object and call method createProp(String key, String value).
 
-Using "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, String>)"
+Using "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, Object>)"
 
--> To create the object and call method createProp(Map<String, String>).
+-> To create the object and call method createProp(Map<String, Object>).
 
 
 SyncNullHyperProperties is apply to this example

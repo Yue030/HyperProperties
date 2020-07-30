@@ -44,7 +44,7 @@ public class NullableHyperProperties implements HyperProperties {
      * @param file File URL
      * @param map Map
      */
-    public NullableHyperProperties(File file, Map<String, String> map) {
+    public NullableHyperProperties(File file, Map<String, Object> map) {
         setFile(file);
         createProp(map);
     }
@@ -190,7 +190,7 @@ public class NullableHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean setProperty(Map<String, String> map) {
+    public boolean setProperty(Map<String, Object> map) {
         try {
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -364,12 +364,12 @@ public class NullableHyperProperties implements HyperProperties {
      * @return String
      */
     @Override
-    public Map<Object, Object> getAll() {
+    public Map<String, Object> getAll() {
         Set<Object> set = properties.keySet();
-        Map<Object, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
-            set.forEach((o -> map.put(o, properties.get(o))));
+            set.forEach((o -> map.put(o.toString(), properties.get(o))));
 
             return map;
         } catch (NullPointerException e) {
@@ -412,10 +412,10 @@ public class NullableHyperProperties implements HyperProperties {
      * @return File exist, return false, else create the properties file and return true
      */
     @Override
-    public boolean createProp(Map<String, String> map) {
+    public boolean createProp(Map<String, Object> map) {
         try (FileOutputStream out = new FileOutputStream(file)) {
             if (!file.exists()) {
-                map.forEach((key, value) -> properties.setProperty(key.toLowerCase(), value));
+                map.forEach((key, value) -> properties.setProperty(key.toLowerCase(), value.toString()));
                 properties.store(out, null);
 
                 return true;
