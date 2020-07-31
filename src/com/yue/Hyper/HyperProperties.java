@@ -12,7 +12,7 @@ public interface HyperProperties {
 
     /**
      * Choose a File with Dialog.
-     * @return
+     * @return File
      */
     static File chooseFile() {
         FileDialog dialog = new FileDialog((Frame)null, "Select File to Load", FileDialog.LOAD);
