@@ -3,6 +3,8 @@ HyperProperties API。讓Properties更簡單！！！
 
 HyperProperties API. Make Properties to easy!!!
 
+# Version: 1.7
+
 # HyperProperties Object (HypreProperties 物件)
 BasicHyperProperties (標準版) (Basic Version)
 
@@ -109,6 +111,16 @@ Using "HyperProperties (name) = new BasicHyperProperties(File file, Map<String, 
 
 
 SyncNullHyperProperties is apply to this example
+
+# 檔案選擇
+自1.7版本起，您可使用HyperProperties提供的靜態方法，chooseFile()來選擇開啟properties
+
+使用方式: File file = HyperProperties.chooseFile();
+
+# FileChooser
+Since version 1.7, You can use HyperProperties provide static method, chooseFile() to choose properties to Open.
+
+How to use: File file = HyperProperties.chooseFile();
 
 # 製作自己的HyperProperties
 請實作HyperProperties這個界面在你的類別中。

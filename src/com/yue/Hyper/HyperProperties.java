@@ -2,12 +2,30 @@ package com.yue.Hyper;
 
 import com.yue.Hyper.Exception.FileNotFoundException;
 
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 public interface HyperProperties {
+
+    /**
+     * Choose a File with Dialog.
+     * @return
+     */
+    static File chooseFile() {
+        FileDialog dialog = new FileDialog((Frame)null, "Select File to Load", FileDialog.LOAD);
+
+        dialog.setFilenameFilter((file, name) -> name.endsWith(".properties"));
+
+        dialog.setVisible(true);
+        File file = new File(dialog.getDirectory() + dialog.getFile());
+        System.out.println("You chose to open this file: " + file);
+
+        return file;
+    }
+
     /**
      * Get properties.
      * @return Properties
