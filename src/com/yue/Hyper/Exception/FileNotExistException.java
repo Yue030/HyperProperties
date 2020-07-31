@@ -1,11 +1,11 @@
 package com.yue.Hyper.Exception;
 
-public class FileNotFoundException extends Exception{
+public class FileNotExistException extends Exception{
 
     /**
      * File Not Found.
      */
-    public FileNotFoundException() {
+    public FileNotExistException() {
         super();
     }
 
@@ -13,7 +13,7 @@ public class FileNotFoundException extends Exception{
      * File Not Found.
      * @param msg Message
      */
-    public FileNotFoundException(String msg) {
+    public FileNotExistException(String msg) {
         super(msg);
     }
 
@@ -22,7 +22,7 @@ public class FileNotFoundException extends Exception{
      * @param msg Message
      * @param cause Cause by
      */
-    public FileNotFoundException(String msg, Throwable cause) {
+    public FileNotExistException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }

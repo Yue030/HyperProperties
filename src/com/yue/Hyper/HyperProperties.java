@@ -1,6 +1,6 @@
 package com.yue.Hyper;
 
-import com.yue.Hyper.Exception.FileNotFoundException;
+import com.yue.Hyper.Exception.FileNotExistException;
 
 import java.awt.*;
 import java.io.File;
@@ -49,63 +49,63 @@ public interface HyperProperties {
      * @param key String
      * @return String
      */
-    String readProp(String key) throws FileNotFoundException;
+    String readProp(String key) throws FileNotExistException;
     /**
      * read Properties File URL
      * @param keys List
      * @return String
      */
-    String readProp(List<String> keys) throws FileNotFoundException;
+    String readProp(List<String> keys) throws FileNotExistException;
 
     /**
      * Get properties value.
      * @param key Key
      * @return value or null
-     * @throws FileNotFoundException if file is not exists
+     * @throws FileNotExistException if file is not exists
      */
-    String getPropValue(String key) throws FileNotFoundException;
+    String getPropValue(String key) throws FileNotExistException;
     /**
      * Get properties value.
      * @param keys Keys List
      * @return list or null
-     * @throws FileNotFoundException if file is not exists
+     * @throws FileNotExistException if file is not exists
      */
-    List<String> getPropValue(List<String> keys) throws FileNotFoundException;
+    List<String> getPropValue(List<String> keys) throws FileNotExistException;
 
     /**
      * Set property value to key, The key must be exist.
      * @param map Map
      * @return boolean
      */
-    boolean setProperty(Map<String,Object> map);
+    boolean setProperty(Map<String,Object> map) throws FileNotExistException;
 
     /**
      * show all key.
      */
-    void showAllKey() throws FileNotFoundException;
+    void showAllKey() throws FileNotExistException;
     /**
      * get all key.
      * @return List
      */
-    List<String> getAllKey() throws FileNotFoundException;
+    List<String> getAllKey() throws FileNotExistException;
     /**
      * show all value.
      */
-    void showAllValue() throws FileNotFoundException;
+    void showAllValue() throws FileNotExistException;
     /**
      * get all value.
      * @return List
      */
-    List<String> getAllValue() throws FileNotFoundException;
+    List<String> getAllValue() throws FileNotExistException;
     /**
      * show all key and value.
      */
-    void showAll() throws FileNotFoundException;
+    void showAll() throws FileNotExistException;
     /**
      * get all key and value.
      * @return map
      */
-    Map<String, Object> getAll() throws FileNotFoundException;
+    Map<String, Object> getAll() throws FileNotExistException;
 
     /**
      * Create Properties.

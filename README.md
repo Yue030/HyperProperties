@@ -15,7 +15,7 @@ NullableHyperProperties (Nullable版) (Nullable Version)
 SyncNullHyperProperties (Nullable版-執行序安全) (Nullable Version-Thread Safe)
 
 # BasicHyperProperties (中文)
-這個物件會在你嘗試使用空指標的時候，丟出一個Exception並停止方法執行更下一步的操作。例如：getAll()將會丟出FileNotFoundException
+這個物件會在你嘗試使用空指標的時候，丟出一個Exception並停止方法執行更下一步的操作。例如：getAll()將會丟出FileNotExistException
 
 
 必須在實例化BasicHyperProperties物件時，輸入File型別的變數。
@@ -39,7 +39,7 @@ SyncNullHyperProperties (Nullable版-執行序安全) (Nullable Version-Thread S
 SyncHyperProperties適用於本例子
 
 # BasicHyperProperties (English)
-This object will throw a Exception to console and stop the method when you try to use a Null Pointer.Ex. getAll() will throw FileNotFoundException.
+This object will throw a Exception to console and stop the method when you try to use a Null Pointer.Ex. getAll() will throw FileNotExistException.
 
 Must be input a file var when you instance a BasicHyperProperties Object.
 

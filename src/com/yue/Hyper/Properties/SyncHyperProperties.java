@@ -1,6 +1,6 @@
 package com.yue.Hyper.Properties;
 
-import com.yue.Hyper.Exception.FileNotFoundException;
+import com.yue.Hyper.Exception.FileNotExistException;
 import com.yue.Hyper.HyperProperties;
 
 import java.io.*;
@@ -84,15 +84,15 @@ public class SyncHyperProperties implements HyperProperties {
      * @return String
      */
     @Override
-    public synchronized String readProp(String key) throws FileNotFoundException {
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+    public synchronized String readProp(String key) throws FileNotExistException {
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
             return key.toLowerCase() + "=" +
                     properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]")
                     + "\n";
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,9 +107,7 @@ public class SyncHyperProperties implements HyperProperties {
      * @return String
      */
     @Override
-    public synchronized String readProp(List<String> keys) throws FileNotFoundException {
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+    public synchronized String readProp(List<String> keys) throws FileNotExistException {
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
@@ -119,6 +117,8 @@ public class SyncHyperProperties implements HyperProperties {
                     properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]")).append("\n"));
 
             return builder.toString();
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,16 +131,16 @@ public class SyncHyperProperties implements HyperProperties {
      *
      * @param key Key
      * @return value or null
-     * @throws FileNotFoundException if file is not exists
+     * @throws FileNotExistException if file is not exists
      */
     @Override
-    public synchronized String getPropValue(String key) throws FileNotFoundException {
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+    public synchronized String getPropValue(String key) throws FileNotExistException {
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
 
             return properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]");
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,18 +152,18 @@ public class SyncHyperProperties implements HyperProperties {
      *
      * @param keys Keys List
      * @return list or null
-     * @throws FileNotFoundException if file is not exists
+     * @throws FileNotExistException if file is not exists
      */
     @Override
-    public synchronized List<String> getPropValue(List<String> keys) throws FileNotFoundException {
+    public synchronized List<String> getPropValue(List<String> keys) throws FileNotExistException {
         List<String> list = new ArrayList<>();
 
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
         try (FileInputStream inputStream = new FileInputStream(file)){
             properties.load(inputStream);
             keys.forEach((key) -> list.add(properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() +"]")));
             return list;
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,7 +178,7 @@ public class SyncHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public synchronized boolean setProperty(Map<String, Object> map) {
+    public synchronized boolean setProperty(Map<String, Object> map) throws FileNotExistException{
         try {
             InputStream in = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -231,6 +231,8 @@ public class SyncHyperProperties implements HyperProperties {
                 bw.close();
                 fos.close();
             }
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -242,9 +244,7 @@ public class SyncHyperProperties implements HyperProperties {
      * show all key.
      */
     @Override
-    public synchronized void showAllKey() throws FileNotFoundException {
-        if (!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+    public synchronized void showAllKey() throws FileNotExistException {
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -254,6 +254,8 @@ public class SyncHyperProperties implements HyperProperties {
                 System.out.println(key);
             });
 
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -265,10 +267,8 @@ public class SyncHyperProperties implements HyperProperties {
      * @return List
      */
     @Override
-    public synchronized List<String> getAllKey() throws FileNotFoundException {
+    public synchronized List<String> getAllKey() throws FileNotExistException {
         List<String> list = new ArrayList<>();
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
 
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
@@ -279,6 +279,8 @@ public class SyncHyperProperties implements HyperProperties {
                 list.add(key);
             });
 
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -289,9 +291,7 @@ public class SyncHyperProperties implements HyperProperties {
      * show all value.
      */
     @Override
-    public synchronized void showAllValue() throws FileNotFoundException {
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+    public synchronized void showAllValue() throws FileNotExistException {
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -301,6 +301,8 @@ public class SyncHyperProperties implements HyperProperties {
                 System.out.println(properties.getProperty(key));
             });
 
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -312,10 +314,8 @@ public class SyncHyperProperties implements HyperProperties {
      * @return List
      */
     @Override
-    public synchronized List<String> getAllValue() throws FileNotFoundException {
+    public synchronized List<String> getAllValue() throws FileNotExistException {
         List<String> list = new ArrayList<>();
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
 
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
@@ -326,6 +326,8 @@ public class SyncHyperProperties implements HyperProperties {
                 list.add(properties.getProperty(key));
             });
 
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -336,9 +338,7 @@ public class SyncHyperProperties implements HyperProperties {
      * show all key and value.
      */
     @Override
-    public synchronized void showAll() throws FileNotFoundException {
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+    public synchronized void showAll() throws FileNotExistException {
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -348,6 +348,8 @@ public class SyncHyperProperties implements HyperProperties {
                 System.out.println(key+ ": " + properties.getProperty(key));
             });
 
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -359,9 +361,7 @@ public class SyncHyperProperties implements HyperProperties {
      * @return String
      */
     @Override
-    public synchronized Map<String, Object> getAll() throws FileNotFoundException {
-        if(!file.exists())
-            throw new FileNotFoundException("The File in \"" + file + "\" is not exists");
+    public synchronized Map<String, Object> getAll() throws FileNotExistException {
         try (FileInputStream in = new FileInputStream(file)){
             properties.load(in);
             Set<Object> set = properties.keySet();
@@ -369,6 +369,8 @@ public class SyncHyperProperties implements HyperProperties {
             set.forEach((o -> map.put(o.toString(), properties.get(o))));
 
             return map;
+        } catch (FileNotFoundException e) {
+            throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -440,7 +442,7 @@ public class SyncHyperProperties implements HyperProperties {
     public synchronized String toString() {
         try {
             return this.getAll().toString();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotExistException e) {
             e.printStackTrace();
         }
         return null;
