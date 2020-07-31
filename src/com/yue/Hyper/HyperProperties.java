@@ -21,7 +21,7 @@ public interface HyperProperties {
 
         dialog.setVisible(true);
         File file = new File(dialog.getDirectory() + dialog.getFile());
-        System.out.println("You chose to open this file: " + file);
+        System.out.println("You choose to open this file: " + file);
 
         return file;
     }
