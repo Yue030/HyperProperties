@@ -5,6 +5,7 @@ import com.yue.Hyper.HyperProperties;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class NullableHyperProperties implements HyperProperties {
 
@@ -123,10 +124,10 @@ public class NullableHyperProperties implements HyperProperties {
 
             StringBuilder builder = new StringBuilder();
 
-            keys.forEach((key) -> {
-                if (properties.getProperty(key.toLowerCase()) != null)
-                    builder.append(key.toLowerCase()).append("=").append(properties.getProperty(key.toLowerCase())).append("\n");
-            });
+            keys.stream()
+                    .filter((key)-> properties.getProperty(key.toLowerCase()) != null)
+                    .map(String::toLowerCase)
+                    .forEach((key) -> builder.append(key.toLowerCase()).append("=").append(properties.getProperty(key.toLowerCase())).append("\n"));
 
             return builder.toString();
         } catch (NullPointerException e) {
@@ -169,10 +170,12 @@ public class NullableHyperProperties implements HyperProperties {
         List<String> list = new ArrayList<>();
         try (FileInputStream inputStream = new FileInputStream(file)) {
             properties.load(inputStream);
-            keys.forEach((key) -> {
-                if (properties.getProperty(key.toLowerCase()) != null)
-                    list.add(properties.getProperty(key.toLowerCase()));
-            });
+
+            keys.stream()
+                    .filter((key)-> properties.getProperty(key.toLowerCase()) != null)
+                    .map(String::toLowerCase)
+                    .forEach((key) -> list.add(properties.getProperty(key, "Null for [" + key +"]")));
+
             return list;
         } catch (NullPointerException e) {
             return list;
@@ -258,10 +261,9 @@ public class NullableHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                System.out.println(key);
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach(System.out::println);
         } catch (NullPointerException e) {
             System.out.println("File is not exist on method \"showAllKey()\"");
         } catch (IOException e) {
@@ -281,10 +283,9 @@ public class NullableHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                list.add(key);
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach(list::add);
         } catch (NullPointerException e) {
             return list;
         } catch (IOException e) {
@@ -302,10 +303,9 @@ public class NullableHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String)k;
-                System.out.println(properties.getProperty(key));
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach((o)-> System.out.println(properties.get(o)));
         } catch (NullPointerException e) {
             System.out.println("File is Not Exist on method \"showAllValue()\"");
         } catch (IOException e) {
@@ -325,10 +325,10 @@ public class NullableHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String)k;
-                list.add(properties.getProperty(key));
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach((key)-> list.add(properties.getProperty(key)));
+
         } catch (NullPointerException e) {
             return list;
         } catch (IOException e) {
@@ -346,10 +346,9 @@ public class NullableHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                System.out.println(key + ": " + properties.getProperty(key));
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach((o)-> System.out.println(o + "=" + properties.get(o)));
         } catch (NullPointerException e) {
             System.out.println("File is Not Exist on method \"showAll()\"");
         } catch (IOException e) {

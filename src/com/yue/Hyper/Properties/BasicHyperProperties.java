@@ -6,6 +6,7 @@ import com.yue.Hyper.HyperProperties;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class BasicHyperProperties implements HyperProperties {
     /**
@@ -113,8 +114,10 @@ public class BasicHyperProperties implements HyperProperties {
 
             StringBuilder builder = new StringBuilder();
 
-            keys.forEach((key) -> builder.append(key.toLowerCase()).append("=").append(
-                    properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() + "]")).append("\n"));
+            keys.stream().map(String::toLowerCase)
+                    .forEach(
+                            (key) -> builder.append(key).append("=").append(
+                                    properties.getProperty(key, "Null for [" + key +"]")).append("\n"));
 
             return builder.toString();
         } catch (FileNotFoundException e) {
@@ -160,7 +163,9 @@ public class BasicHyperProperties implements HyperProperties {
 
         try (FileInputStream inputStream = new FileInputStream(file)) {
             properties.load(inputStream);
-            keys.forEach((key) -> list.add(properties.getProperty(key.toLowerCase(), "Null for [" + key.toLowerCase() + "]")));
+            keys.stream()
+                    .map(String::toLowerCase)
+                    .forEach((key) -> list.add(properties.getProperty(key, "Null for [" + key +"]")));
             return list;
         } catch (FileNotFoundException e) {
             throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
@@ -247,10 +252,9 @@ public class BasicHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                System.out.println(key);
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach(System.out::println);
         } catch (FileNotFoundException e) {
             throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
@@ -271,10 +275,9 @@ public class BasicHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                list.add(key);
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach(list::add);
 
         } catch (FileNotFoundException e) {
             throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
@@ -293,10 +296,9 @@ public class BasicHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                System.out.println(properties.getProperty(key));
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach((o)-> System.out.println(properties.get(o)));
         } catch (FileNotFoundException e) {
             throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
         } catch (IOException e) {
@@ -317,10 +319,9 @@ public class BasicHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                list.add(properties.getProperty(key));
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach((key)-> list.add(properties.getProperty(key)));
 
         } catch (FileNotFoundException e) {
             throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
@@ -339,10 +340,9 @@ public class BasicHyperProperties implements HyperProperties {
             properties.load(in);
             Set<Object> set = properties.keySet();
 
-            set.forEach((k) -> {
-                String key = (String) k;
-                System.out.println(key + ": " + properties.getProperty(key));
-            });
+            Stream.of(set.toArray())
+                    .map(Object::toString)
+                    .forEach((o)-> System.out.println(o + "=" + properties.get(o)));
 
         } catch (FileNotFoundException e) {
             throw new FileNotExistException("The File in \"" + file + "\" is not exists", e);
