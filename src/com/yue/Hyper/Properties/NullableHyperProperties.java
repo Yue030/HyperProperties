@@ -15,6 +15,11 @@ public class NullableHyperProperties implements HyperProperties {
     private File file = null;
 
     /**
+     * Save data.
+     */
+    private Map<String, Object> save = null;
+
+    /**
      * Constructor.
      */
     public NullableHyperProperties() {
@@ -175,7 +180,6 @@ public class NullableHyperProperties implements HyperProperties {
                     .filter((key)-> properties.getProperty(key.toLowerCase()) != null)
                     .map(String::toLowerCase)
                     .forEach((key) -> list.add(properties.getProperty(key, "Null for [" + key +"]")));
-
             return list;
         } catch (NullPointerException e) {
             return list;
@@ -449,5 +453,38 @@ public class NullableHyperProperties implements HyperProperties {
     @Override
     public String toString() {
         return this.getAll().toString();
+    }
+
+    /**
+     * Save the data.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean save() {
+        save = new HashMap<>();
+        boolean isNull = getAll() == null ? true : false;
+
+        if (!isNull) {
+            save = getAll();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Restore the data.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean restore() {
+        if (save != null) {
+            removeProp();
+            createProp(save);
+            return true;
+        }
+        return false;
     }
 }

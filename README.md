@@ -3,7 +3,7 @@ HyperProperties API。讓Properties更簡單！！！
 
 HyperProperties API. Make Properties to easy!!!
 
-# Version: 1.9
+# Version: 2.0
 
 # HyperProperties Object (HypreProperties 物件)
 BasicHyperProperties (標準版) (Basic Version)
@@ -126,7 +126,7 @@ How to use: File file = HyperProperties.chooseFile();
 請實作HyperProperties這個界面在你的類別中。
 
 
-你至少需要實做17個在你的類別中。
+你至少需要實做19個Method在你的類別中。
 
 
 你也可以實做toString()方法。建議你使用 "return getAll().toString" 來實做。
@@ -141,7 +141,7 @@ How to use: File file = HyperProperties.chooseFile();
 # Making own HyperProperties
 Please implements HyperProperties Interface to your class.
 
-You must implement at least 17 methods in your class.
+You must implement at least 19 methods in your class.
 
 You can also override the toString() method. Recommend you using "return getAll().toString" to override the method.
 

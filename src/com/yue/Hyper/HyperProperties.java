@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Properties;
 
 public interface HyperProperties {
-
     /**
      * Choose a File with Dialog.
      * @return File
@@ -126,4 +125,16 @@ public interface HyperProperties {
      * @return if remove success, return true
      */
     boolean removeProp();
+
+    /**
+     * Save the data.
+     * @return boolean
+     */
+    boolean save();
+
+    /**
+     * Restore the data.
+     * @return boolean
+     */
+    boolean restore();
 }

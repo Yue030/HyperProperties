@@ -15,6 +15,11 @@ public class BasicHyperProperties implements HyperProperties {
     private File file = null;
 
     /**
+     * Save data.
+     */
+    private Map<String, Object> save = null;
+
+    /**
      * Constructor.
      * @param file FileURL
      */
@@ -442,5 +447,43 @@ public class BasicHyperProperties implements HyperProperties {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Save the data.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean save() {
+        save = new HashMap<>();
+        try {
+            boolean isNull = getAll() == null;
+
+            if (!isNull) {
+                save = getAll();
+                return true;
+            }
+
+            return false;
+        } catch (FileNotExistException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Restore the data.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean restore() {
+        if (save != null) {
+            removeProp();
+            createProp(save);
+            return true;
+        }
+        return false;
     }
 }

@@ -15,6 +15,11 @@ public class SyncNullHyperProperties implements HyperProperties {
     private File file = null;
 
     /**
+     * Save data.
+     */
+    private Map<String, Object> save = null;
+
+    /**
      * Constructor.
      */
     public SyncNullHyperProperties() {
@@ -448,5 +453,38 @@ public class SyncNullHyperProperties implements HyperProperties {
     @Override
     public synchronized String toString() {
         return this.getAll().toString();
+    }
+
+    /**
+     * Save the data.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean save() {
+        save = new HashMap<>();
+        boolean isNull = getAll() == null;
+
+        if (!isNull) {
+            save = getAll();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Restore the data.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean restore() {
+        if (save != null) {
+            removeProp();
+            createProp(save);
+            return true;
+        }
+        return false;
     }
 }

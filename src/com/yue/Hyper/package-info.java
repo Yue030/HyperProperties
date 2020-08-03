@@ -1,6 +1,6 @@
 /**
  * HyperProperties API. Make properties to Easy!!!
  * @author yue
- * @version 1.9
+ * @version 2.0
  */
 package com.yue.Hyper;
