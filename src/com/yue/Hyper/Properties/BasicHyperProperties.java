@@ -449,8 +449,8 @@ public class BasicHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean saveToClass() {
-        boolean isClear = clearClassSave();
+    public boolean backupOnClass() {
+        boolean isClear = clearClassBackup();
 
         try {
             if (isClear) {
@@ -499,8 +499,8 @@ public class BasicHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean saveToMap() {
-        clearMapSave();
+    public boolean backupOnMap() {
+        clearMapBackup();
         try {
             boolean isNull = getAll() == null;
 
@@ -537,7 +537,7 @@ public class BasicHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean clearMapSave() {
+    public boolean clearMapBackup() {
         saveMap.clear();
         return true;
     }
@@ -548,7 +548,7 @@ public class BasicHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean clearClassSave() {
+    public boolean clearClassBackup() {
         try {
             savePreferences.clear();
             return true;

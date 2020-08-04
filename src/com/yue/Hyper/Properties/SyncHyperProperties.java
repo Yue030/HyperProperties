@@ -452,8 +452,8 @@ public class SyncHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public synchronized boolean saveToClass() {
-        boolean isClear = clearClassSave();
+    public synchronized boolean backupOnClass() {
+        boolean isClear = clearClassBackup();
 
         try {
             if (isClear) {
@@ -502,8 +502,8 @@ public class SyncHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public synchronized boolean saveToMap() {
-        clearMapSave();
+    public synchronized boolean backupOnMap() {
+        clearMapBackup();
         try {
             boolean isNull = getAll() == null;
 
@@ -540,7 +540,7 @@ public class SyncHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public synchronized boolean clearMapSave() {
+    public synchronized boolean clearMapBackup() {
         saveMap.clear();
         return true;
     }
@@ -551,7 +551,7 @@ public class SyncHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public synchronized boolean clearClassSave() {
+    public synchronized boolean clearClassBackup() {
         try {
             savePreferences.clear();
             return true;

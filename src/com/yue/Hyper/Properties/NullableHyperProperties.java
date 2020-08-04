@@ -459,8 +459,8 @@ public class NullableHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean saveToClass() {
-        boolean isClear = clearClassSave();
+    public boolean backupOnClass() {
+        boolean isClear = clearClassBackup();
 
         if (isClear) {
             Map<String, Object> map = getAll();
@@ -504,8 +504,8 @@ public class NullableHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean saveToMap() {
-        clearMapSave();
+    public boolean backupOnMap() {
+        clearMapBackup();
         boolean isNull = getAll() == null;
 
         if (!isNull) {
@@ -537,7 +537,7 @@ public class NullableHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean clearMapSave() {
+    public boolean clearMapBackup() {
         saveMap.clear();
         return true;
     }
@@ -548,7 +548,7 @@ public class NullableHyperProperties implements HyperProperties {
      * @return boolean
      */
     @Override
-    public boolean clearClassSave() {
+    public boolean clearClassBackup() {
         try {
             savePreferences.clear();
             return true;
