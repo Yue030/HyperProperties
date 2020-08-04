@@ -5,6 +5,8 @@ import com.yue.Hyper.HyperProperties;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 import java.util.stream.Stream;
 
 public class SyncNullHyperProperties implements HyperProperties {
@@ -15,9 +17,14 @@ public class SyncNullHyperProperties implements HyperProperties {
     private File file = null;
 
     /**
-     * Save data.
+     * Save data map.
      */
-    private Map<String, Object> save = null;
+    private Map<String, Object> saveMap = new HashMap<>();
+
+    /**
+     * Save data preferences.
+     */
+    private final Preferences savePreferences = Preferences.userNodeForPackage(SyncNullHyperProperties.class);
 
     /**
      * Constructor.
@@ -447,6 +454,111 @@ public class SyncNullHyperProperties implements HyperProperties {
     }
 
     /**
+     * Save the data to class.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean saveToClass() {
+        boolean isClear = clearClassSave();
+
+        if (isClear) {
+            Map<String, Object> map = getAll();
+            map.keySet().forEach((k)-> savePreferences.put(k, map.get(k).toString()));
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Restore the data from class.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean restoreFromClass() {
+        try {
+            String[] keys = savePreferences.keys();
+            Map<String, Object> map = new HashMap<>();
+
+            for (String key : keys) {
+                map.put(key, savePreferences.get(key, null));
+            }
+
+            removeProp();
+            createProp(map);
+
+            return true;
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Save the data to map.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean saveToMap() {
+        clearMapSave();
+        boolean isNull = getAll() == null;
+
+        if (!isNull) {
+            saveMap = getAll();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Restore the data from map.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean restoreFromMap() {
+        if (saveMap != null) {
+            removeProp();
+            createProp(saveMap);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Clear map save.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean clearMapSave() {
+        saveMap.clear();
+        return true;
+    }
+
+    /**
+     * Clear class save.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean clearClassSave() {
+        try {
+            savePreferences.clear();
+            return true;
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * toString
      * @return String
      */
@@ -455,36 +567,5 @@ public class SyncNullHyperProperties implements HyperProperties {
         return this.getAll().toString();
     }
 
-    /**
-     * Save the data.
-     *
-     * @return boolean
-     */
-    @Override
-    public boolean save() {
-        save = new HashMap<>();
-        boolean isNull = getAll() == null;
-
-        if (!isNull) {
-            save = getAll();
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Restore the data.
-     *
-     * @return boolean
-     */
-    @Override
-    public boolean restore() {
-        if (save != null) {
-            removeProp();
-            createProp(save);
-            return true;
-        }
-        return false;
-    }
 }
+

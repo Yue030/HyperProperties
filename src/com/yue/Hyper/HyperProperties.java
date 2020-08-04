@@ -127,14 +127,39 @@ public interface HyperProperties {
     boolean removeProp();
 
     /**
-     * Save the data.
+     * Save the data to class.
      * @return boolean
      */
-    boolean save();
+    boolean saveToClass();
 
     /**
-     * Restore the data.
+     * Restore the data from class.
      * @return boolean
      */
-    boolean restore();
+    boolean restoreFromClass();
+
+    /**
+     * Save the data to map.
+     * @return boolean
+     */
+    boolean saveToMap();
+
+    /**
+     * Restore the data from map.
+     * @return boolean
+     */
+    boolean restoreFromMap();
+
+    /**
+     * Clear map save.
+     * @return boolean
+     */
+    boolean clearMapSave();
+
+    /**
+     * Clear class save.
+     * @return boolean
+     */
+    boolean clearClassSave();
 }
+

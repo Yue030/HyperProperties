@@ -6,6 +6,8 @@ import com.yue.Hyper.HyperProperties;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 import java.util.stream.Stream;
 
 public class SyncHyperProperties implements HyperProperties {
@@ -15,9 +17,14 @@ public class SyncHyperProperties implements HyperProperties {
     private File file = null;
 
     /**
-     * Save data.
+     * Save data map.
      */
-    private Map<String, Object> save = null;
+    private Map<String, Object> saveMap = new HashMap<>();
+
+    /**
+     * Save data preferences.
+     */
+    private final Preferences savePreferences = Preferences.userNodeForPackage(SyncHyperProperties.class);
 
     /**
      * Constructor.
@@ -440,32 +447,68 @@ public class SyncHyperProperties implements HyperProperties {
     }
 
     /**
-     * toString
-     * @return String
-     */
-    @Override
-    public synchronized String toString() {
-        try {
-            return this.getAll().toString();
-        } catch (FileNotExistException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Save the data.
+     * Save the data to class.
      *
      * @return boolean
      */
     @Override
-    public synchronized boolean save() {
-        save = new HashMap<>();
+    public synchronized boolean saveToClass() {
+        boolean isClear = clearClassSave();
+
+        try {
+            if (isClear) {
+                Map<String, Object> map = getAll();
+                map.keySet().forEach((k)-> savePreferences.put(k, map.get(k).toString()));
+
+                return true;
+            }
+
+        } catch (FileNotExistException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Restore the data from class.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean restoreFromClass() {
+        try {
+            String[] keys = savePreferences.keys();
+            Map<String, Object> map = new HashMap<>();
+
+            for (String key : keys) {
+                map.put(key, savePreferences.get(key, null));
+            }
+
+            removeProp();
+            createProp(map);
+
+            return true;
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Save the data to map.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean saveToMap() {
+        clearMapSave();
         try {
             boolean isNull = getAll() == null;
 
             if (!isNull) {
-                save = getAll();
+                saveMap = getAll();
                 return true;
             }
 
@@ -477,17 +520,58 @@ public class SyncHyperProperties implements HyperProperties {
     }
 
     /**
-     * Restore the data.
+     * Restore the data from map.
      *
      * @return boolean
      */
     @Override
-    public synchronized boolean restore() {
-        if (save != null) {
+    public synchronized boolean restoreFromMap() {
+        if (saveMap != null) {
             removeProp();
-            createProp(save);
+            createProp(saveMap);
             return true;
         }
         return false;
+    }
+
+    /**
+     * Clear map save.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean clearMapSave() {
+        saveMap.clear();
+        return true;
+    }
+
+    /**
+     * Clear class save.
+     *
+     * @return boolean
+     */
+    @Override
+    public synchronized boolean clearClassSave() {
+        try {
+            savePreferences.clear();
+            return true;
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+    @Override
+    public synchronized String toString() {
+        try {
+            return this.getAll().toString();
+        } catch (FileNotExistException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

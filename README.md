@@ -3,7 +3,7 @@ HyperProperties API。讓Properties更簡單！！！
 
 HyperProperties API. Make Properties to easy!!!
 
-# Version: 2.0
+# Version: 2.3
 
 # HyperProperties Object (HypreProperties 物件)
 BasicHyperProperties (標準版) (Basic Version)
@@ -121,6 +121,46 @@ SyncNullHyperProperties is apply to this example
 Since version 1.7, You can use HyperProperties provide static method, chooseFile() to choose properties to Open.
 
 How to use: File file = HyperProperties.chooseFile();
+
+# 檔案備份及還原
+自2.3版本起，
+
+您可使用物件內的saveOnMap()或是saveOnClass()進行備份，以及使用restoreFromMap()或是restoreFromClass()來還原
+
+Map:
+
+優:每個備份無衝突
+
+缺:存取在系統執行的時候。若程式關閉，備份則會自動消失
+
+Class:
+
+優:就算關閉系統，備份也將存在。您可使用clearClassSave()來清除備份。
+
+缺:同一個class的物件備份及還原時，可能存在潛在的危險
+
+您可以依狀況選擇備份還原方式。
+
+# Properties Backup and Restore
+Since version 2.3
+
+You can use the instance method saveOnMap() or saveOnClass() to backup the property.
+
+and use restoreFromMap() or restoreFromClass() to restore.
+
+Map:
+
+Advantage: No conflicts per backup
+
+Disadvantage: Backup only can use in runtime. If the program close, the backup will delete.
+
+Class:
+
+Advantage: Even if you close the program, backup also alive. You can use clearClassSave() to clear backup.
+
+Disadvantage: In same class objecties, make backup or restore. Maybe potentially dangerous
+
+You can choose the backup and restore method according to the situation.
 
 # 製作自己的HyperProperties
 請實作HyperProperties這個界面在你的類別中。
