@@ -125,9 +125,13 @@ How to use: File file = HyperProperties.chooseFile();
 # 檔案備份及還原
 自2.3版本起，
 
-您可使用物件內的saveOnMap()或是saveOnClass()進行備份，以及使用restoreFromMap()或是restoreFromClass()來還原
+您可使用物件內的backupOnMap()或是backupOnClass()進行備份，以及使用restoreFromMap()或是restoreFromClass()來還原
 
 Map:
+
+
+您可使用clearMapBackup()來清除備份。
+
 
 優:每個備份無衝突
 
@@ -135,7 +139,11 @@ Map:
 
 Class:
 
-優:就算關閉系統，備份也將存在。您可使用clearClassSave()來清除備份。
+
+您可使用clearClassBackup()來清除備份。
+
+
+優:就算關閉系統，備份也將存在。
 
 缺:同一個class的物件備份及還原時，可能存在潛在的危險
 
@@ -144,11 +152,15 @@ Class:
 # Properties Backup and Restore
 Since version 2.3
 
-You can use the instance method saveOnMap() or saveOnClass() to backup the property.
+You can use the instance method backupOnMap() or backupOnClass() to backup the property.
 
 and use restoreFromMap() or restoreFromClass() to restore.
 
 Map:
+
+
+You can use clearMapBackup() to clear the backup.
+
 
 Advantage: No conflicts per backup
 
@@ -156,7 +168,11 @@ Disadvantage: Backup only can use in runtime. If the program close, the backup w
 
 Class:
 
-Advantage: Even if you close the program, backup also alive. You can use clearClassSave() to clear backup.
+
+You can use clearClassBackup() to clear the backup.
+
+
+Advantage: Even if you close the program, backup also alive.
 
 Disadvantage: In same class objecties, make backup or restore. Maybe potentially dangerous
 
