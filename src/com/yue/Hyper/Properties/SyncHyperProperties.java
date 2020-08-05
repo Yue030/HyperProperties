@@ -519,10 +519,8 @@ public class SyncHyperProperties implements HyperProperties {
     public synchronized boolean clearBackup() {
         if (backupName != null) {
             File file = new File(SyncHyperProperties.class.getClassLoader() + backupName);
-            if (file.exists()) {
-                return file.delete();
-            }
-            return false;
+
+            return file.exists() ? file.delete() : false;
         }
         return false;
     }

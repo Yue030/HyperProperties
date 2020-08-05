@@ -3,7 +3,7 @@ HyperProperties API。讓Properties更簡單！！！
 
 HyperProperties API. Make Properties to easy!!!
 
-# Version: 3.1
+# Version: 3.2
 
 # HyperProperties Object (HypreProperties 物件)
 BasicHyperProperties (標準版) (Basic Version)

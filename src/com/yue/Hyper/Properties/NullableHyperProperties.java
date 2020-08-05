@@ -526,10 +526,8 @@ public class NullableHyperProperties implements HyperProperties {
     public boolean clearBackup() {
         if (backupName != null) {
             File file = new File(NullableHyperProperties.class.getClassLoader() + backupName);
-            if (file.exists()) {
-                return file.delete();
-            }
-            return false;
+
+            return file.exists() ? file.delete() : false;
         }
         return false;
     }
