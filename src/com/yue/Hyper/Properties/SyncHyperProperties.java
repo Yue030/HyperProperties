@@ -466,17 +466,19 @@ public class SyncHyperProperties implements HyperProperties {
      */
     @Override
     public synchronized boolean backup() {
-        clearBackup();
-        if (backupName != null) {
-            try (FileOutputStream out = new FileOutputStream(new File(SyncHyperProperties.class.getClassLoader() + backupName))) {
-                FileInputStream in = new FileInputStream(file);
-                properties.load(in);
+        boolean isClear = clearBackup();
+        if (isClear) {
+            if (backupName != null) {
+                try (FileOutputStream out = new FileOutputStream(new File(SyncHyperProperties.class.getClassLoader() + backupName))) {
+                    try (FileInputStream in = new FileInputStream(file)) {
+                        properties.load(in);
 
-                properties.store(out, null);
-                in.close();
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
+                        properties.store(out, null);
+                    }
+                    return true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;
