@@ -3,7 +3,7 @@ HyperProperties API。讓Properties更簡單！！！
 
 HyperProperties API. Make Properties to easy!!!
 
-# Version: 2.5
+# Version: 2.8
 
 # HyperProperties Object (HypreProperties 物件)
 BasicHyperProperties (標準版) (Basic Version)
@@ -123,60 +123,22 @@ Since version 1.7, You can use HyperProperties provide static method, chooseFile
 How to use: File file = HyperProperties.chooseFile();
 
 # 檔案備份及還原
-自2.3版本起，
+自2.8版本起，
 
-您可使用物件內的backupOnMap()或是backupOnClass()進行備份，以及使用restoreFromMap()或是restoreFromClass()來還原
+您可使用方法backup()來進行備份，以及使用restore()方法來還原
 
-Map:
+使用clearBackup()可將備份檔案進行刪除動作
 
-
-您可使用clearMapBackup()來清除備份。
-
-
-優:每個備份無衝突
-
-缺:存取在系統執行的時候。若程式關閉，備份則會自動消失
-
-Class:
-
-
-您可使用clearClassBackup()來清除備份。
-
-
-優:就算關閉系統，備份也將存在。
-
-缺:同一個class的物件備份及還原時，可能存在潛在的危險
-
-您可以依狀況選擇備份還原方式。
+注意:在使用前，請先使用setBackupName(String name)，這將定義你的備份檔案名稱
 
 # Properties Backup and Restore
-Since version 2.3
+Since version 2.8
 
-You can use the instance method backupOnMap() or backupOnClass() to backup the property.
+You can use backup() to backup properties, and use restore() to restore properties.
 
-and use restoreFromMap() or restoreFromClass() to restore.
+use clearBackup() can delete the backup file.
 
-Map:
-
-
-You can use clearMapBackup() to clear the backup.
-
-
-Advantage: No conflicts per backup
-
-Disadvantage: Backup only can use in runtime. If the program close, the backup will delete.
-
-Class:
-
-
-You can use clearClassBackup() to clear the backup.
-
-
-Advantage: Even if you close the program, backup also alive.
-
-Disadvantage: In same class objecties, make backup or restore. Maybe potentially dangerous
-
-You can choose the backup and restore method according to the situation.
+Note: Before use, you need to use the setBackupName(String name), it will be define your backup file name.
 
 # 製作自己的HyperProperties
 請實作HyperProperties這個界面在你的類別中。

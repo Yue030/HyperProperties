@@ -5,8 +5,6 @@ import com.yue.Hyper.HyperProperties;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
 import java.util.stream.Stream;
 
 public class SyncNullHyperProperties implements HyperProperties {
@@ -17,14 +15,9 @@ public class SyncNullHyperProperties implements HyperProperties {
     private File file = null;
 
     /**
-     * Save data map.
+     * Backup file name.
      */
-    private Map<String, Object> saveMap = new HashMap<>();
-
-    /**
-     * Save data preferences.
-     */
-    private final Preferences savePreferences = Preferences.userNodeForPackage(SyncNullHyperProperties.class);
+    private String backupName = null;
 
     /**
      * Constructor.
@@ -95,6 +88,26 @@ public class SyncNullHyperProperties implements HyperProperties {
     @Override
     public synchronized void setFile(File file) {
         this.file = file;
+    }
+
+    /**
+     * Get backup name.
+     *
+     * @return String
+     */
+    @Override
+    public String getBackupName() {
+        return this.backupName;
+    }
+
+    /**
+     * Set Backup name
+     *
+     * @param name Name
+     */
+    @Override
+    public void setBackupName(String name) {
+        this.backupName = name.concat(".properties");
     }
 
     /**
@@ -454,106 +467,67 @@ public class SyncNullHyperProperties implements HyperProperties {
     }
 
     /**
-     * Save the data to class.
+     * Backup properties.
      *
      * @return boolean
      */
     @Override
-    public synchronized boolean backupOnClass() {
-        boolean isClear = clearClassBackup();
+    public synchronized boolean backup() {
+        clearBackup();
+        if (backupName != null) {
+            try (FileOutputStream out = new FileOutputStream(new File(SyncNullHyperProperties.class.getClassLoader() + backupName))) {
+                FileInputStream in = new FileInputStream(file);
+                properties.load(in);
 
-        if (isClear) {
-            Map<String, Object> map = getAll();
-            map.keySet().forEach((k)-> savePreferences.put(k, map.get(k).toString()));
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Restore the data from class.
-     *
-     * @return boolean
-     */
-    @Override
-    public synchronized boolean restoreFromClass() {
-        try {
-            String[] keys = savePreferences.keys();
-            Map<String, Object> map = new HashMap<>();
-
-            for (String key : keys) {
-                map.put(key, savePreferences.get(key, null));
+                properties.store(out, null);
+                in.close();
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            removeProp();
-            createProp(map);
-
-            return true;
-        } catch (BackingStoreException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    /**
-     * Save the data to map.
-     *
-     * @return boolean
-     */
-    @Override
-    public synchronized boolean backupOnMap() {
-        clearMapBackup();
-        boolean isNull = getAll() == null;
-
-        if (!isNull) {
-            saveMap = getAll();
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Restore the data from map.
-     *
-     * @return boolean
-     */
-    @Override
-    public synchronized boolean restoreFromMap() {
-        if (saveMap != null) {
-            removeProp();
-            createProp(saveMap);
-            return true;
         }
         return false;
     }
 
     /**
-     * Clear map save.
+     * Restore properties.
      *
      * @return boolean
      */
     @Override
-    public synchronized boolean clearMapBackup() {
-        saveMap.clear();
-        return true;
+    public synchronized boolean restore() {
+        if (backupName != null) {
+            try (FileInputStream in = new FileInputStream(SyncNullHyperProperties.class.getClassLoader() + backupName)) {
+
+                properties.load(in);
+                Set<Object> set = properties.keySet();
+                Map<String, Object> map = new HashMap<>();
+                set.forEach((o -> map.put(o.toString(), properties.get(o))));
+
+                removeProp();
+                createProp(map);
+
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     /**
-     * Clear class save.
+     * Clear Backup.
      *
      * @return boolean
      */
     @Override
-    public synchronized boolean clearClassBackup() {
-        try {
-            savePreferences.clear();
-            return true;
-        } catch (BackingStoreException e) {
-            e.printStackTrace();
+    public synchronized boolean clearBackup() {
+        if (backupName != null) {
+            File file = new File(SyncNullHyperProperties.class.getClassLoader() + backupName);
+            if (file.exists()) {
+                return file.delete();
+            }
+            return false;
         }
         return false;
     }

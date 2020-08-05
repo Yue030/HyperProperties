@@ -44,6 +44,18 @@ public interface HyperProperties {
     void setFile(File file);
 
     /**
+     * Get backup name.
+     * @return String
+     */
+    String getBackupName();
+
+    /**
+     * Set Backup name
+     * @param name Name
+     */
+    void setBackupName(String name);
+
+    /**
      * read Properties File URL
      * @param key String
      * @return String
@@ -127,39 +139,21 @@ public interface HyperProperties {
     boolean removeProp();
 
     /**
-     * Backup the data to class.
+     * Backup properties.
      * @return boolean
      */
-    boolean backupOnClass();
+    boolean backup();
 
     /**
-     * Restore the data from class.
+     * Restore properties.
      * @return boolean
      */
-    boolean restoreFromClass();
+    boolean restore();
 
     /**
-     * Backup the data to map.
+     * Clear Backup.
      * @return boolean
      */
-    boolean backupOnMap();
-
-    /**
-     * Restore the data from map.
-     * @return boolean
-     */
-    boolean restoreFromMap();
-
-    /**
-     * Clear map backup.
-     * @return boolean
-     */
-    boolean clearMapBackup();
-
-    /**
-     * Clear class backup.
-     * @return boolean
-     */
-    boolean clearClassBackup();
+    boolean clearBackup();
 }
 
