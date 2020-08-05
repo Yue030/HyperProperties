@@ -476,7 +476,7 @@ public class NullableHyperProperties implements HyperProperties {
         boolean isClear = clearBackup();
         if (isClear) {
             if (backupName != null) {
-                try (FileOutputStream out = new FileOutputStream(new File(NullableHyperProperties.class.getClassLoader() + backupName))) {
+                try (FileOutputStream out = new FileOutputStream(NullableHyperProperties.class.getClassLoader() + backupName)) {
                     try (FileInputStream in = new FileInputStream(file)) {
                         properties.load(in);
 

@@ -469,7 +469,7 @@ public class SyncHyperProperties implements HyperProperties {
         boolean isClear = clearBackup();
         if (isClear) {
             if (backupName != null) {
-                try (FileOutputStream out = new FileOutputStream(new File(SyncHyperProperties.class.getClassLoader() + backupName))) {
+                try (FileOutputStream out = new FileOutputStream(SyncHyperProperties.class.getClassLoader() + backupName)) {
                     try (FileInputStream in = new FileInputStream(file)) {
                         properties.load(in);
 

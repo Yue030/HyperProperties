@@ -466,7 +466,7 @@ public class BasicHyperProperties implements HyperProperties {
         boolean isClear = clearBackup();
         if (isClear) {
             if (backupName != null) {
-                try (FileOutputStream out = new FileOutputStream(new File(BasicHyperProperties.class.getClassLoader() + backupName))) {
+                try (FileOutputStream out = new FileOutputStream(BasicHyperProperties.class.getClassLoader() + backupName)) {
                     try (FileInputStream in = new FileInputStream(file)) {
                         properties.load(in);
 
