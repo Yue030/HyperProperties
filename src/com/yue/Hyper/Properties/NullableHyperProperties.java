@@ -475,7 +475,7 @@ public class NullableHyperProperties implements HyperProperties {
     public boolean backup() {
         clearBackup();
         if (backupName != null) {
-            try (FileOutputStream out = new FileOutputStream(NullableHyperProperties.class.getClassLoader() + backupName)) {
+            try (FileOutputStream out = new FileOutputStream(backupName)) {
                 try (FileInputStream in = new FileInputStream(file)) {
                     properties.load(in);
 
@@ -497,7 +497,7 @@ public class NullableHyperProperties implements HyperProperties {
     @Override
     public boolean restore() {
         if (backupName != null) {
-            try (FileInputStream in = new FileInputStream(NullableHyperProperties.class.getClassLoader() + backupName)) {
+            try (FileInputStream in = new FileInputStream(backupName)) {
 
                 properties.load(in);
                 Set<Object> set = properties.keySet();
@@ -523,9 +523,9 @@ public class NullableHyperProperties implements HyperProperties {
     @Override
     public boolean clearBackup() {
         if (backupName != null) {
-            File file = new File(NullableHyperProperties.class.getClassLoader() + backupName);
+            File file = new File(backupName);
 
-            return file.exists() ? file.delete() : false;
+            return file.exists() && file.delete();
         }
         return false;
     }

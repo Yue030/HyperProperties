@@ -468,7 +468,7 @@ public class SyncHyperProperties implements HyperProperties {
     public synchronized boolean backup() {
         clearBackup();
         if (backupName != null) {
-            try (FileOutputStream out = new FileOutputStream(SyncHyperProperties.class.getClassLoader() + backupName)) {
+            try (FileOutputStream out = new FileOutputStream(backupName)) {
                 try (FileInputStream in = new FileInputStream(file)) {
                     properties.load(in);
 
@@ -490,7 +490,7 @@ public class SyncHyperProperties implements HyperProperties {
     @Override
     public synchronized boolean restore() {
         if (backupName != null) {
-            try (FileInputStream in = new FileInputStream(SyncHyperProperties.class.getClassLoader() + backupName)) {
+            try (FileInputStream in = new FileInputStream(backupName)) {
 
                 properties.load(in);
                 Set<Object> set = properties.keySet();
@@ -516,9 +516,9 @@ public class SyncHyperProperties implements HyperProperties {
     @Override
     public synchronized boolean clearBackup() {
         if (backupName != null) {
-            File file = new File(SyncHyperProperties.class.getClassLoader() + backupName);
+            File file = new File(backupName);
 
-            return file.exists() ? file.delete() : false;
+            return file.exists() && file.delete();
         }
         return false;
     }

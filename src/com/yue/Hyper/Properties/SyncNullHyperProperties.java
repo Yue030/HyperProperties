@@ -473,19 +473,17 @@ public class SyncNullHyperProperties implements HyperProperties {
      */
     @Override
     public synchronized boolean backup() {
-        boolean isClear = clearBackup();
-        if (isClear) {
-            if (backupName != null) {
-                try (FileOutputStream out = new FileOutputStream(SyncNullHyperProperties.class.getClassLoader() + backupName)) {
-                    try (FileInputStream in = new FileInputStream(file)) {
-                        properties.load(in);
+        clearBackup();
+        if (backupName != null) {
+            try (FileOutputStream out = new FileOutputStream(backupName)) {
+                try (FileInputStream in = new FileInputStream(file)) {
+                    properties.load(in);
 
-                        properties.store(out, null);
-                    }
-                    return true;
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    properties.store(out, null);
                 }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return false;
@@ -498,14 +496,17 @@ public class SyncNullHyperProperties implements HyperProperties {
      */
     @Override
     public synchronized boolean restore() {
-        clearBackup();
         if (backupName != null) {
-            try (FileOutputStream out = new FileOutputStream(SyncNullHyperProperties.class.getClassLoader() + backupName)) {
-                try (FileInputStream in = new FileInputStream(file)) {
-                    properties.load(in);
+            try (FileInputStream in = new FileInputStream(backupName)) {
 
-                    properties.store(out, null);
-                }
+                properties.load(in);
+                Set<Object> set = properties.keySet();
+                Map<String, Object> map = new HashMap<>();
+                set.forEach((o -> map.put(o.toString(), properties.get(o))));
+
+                removeProp();
+                createProp(map);
+
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -522,9 +523,9 @@ public class SyncNullHyperProperties implements HyperProperties {
     @Override
     public synchronized boolean clearBackup() {
         if (backupName != null) {
-            File file = new File(SyncNullHyperProperties.class.getClassLoader() + backupName);
+            File file = new File(backupName);
 
-            return file.exists() ? file.delete() : false;
+            return file.exists() && file.delete();
         }
         return false;
     }
