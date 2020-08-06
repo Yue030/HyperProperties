@@ -144,7 +144,7 @@ Note: Before use, you need to use the setBackupName(String name), it will be def
 請實作HyperProperties這個界面在你的類別中。
 
 
-你至少需要實做19個Method在你的類別中。
+你至少需要實做22個Method在你的類別中。
 
 
 你也可以實做toString()方法。建議你使用 "return getAll().toString" 來實做。
@@ -159,7 +159,7 @@ Note: Before use, you need to use the setBackupName(String name), it will be def
 # Making own HyperProperties
 Please implements HyperProperties Interface to your class.
 
-You must implement at least 19 methods in your class.
+You must implement at least 22 methods in your class.
 
 You can also override the toString() method. Recommend you using "return getAll().toString" to override the method.
 
