@@ -498,17 +498,14 @@ public class SyncNullHyperProperties implements HyperProperties {
      */
     @Override
     public synchronized boolean restore() {
+        clearBackup();
         if (backupName != null) {
-            try (FileInputStream in = new FileInputStream(SyncNullHyperProperties.class.getClassLoader() + backupName)) {
+            try (FileOutputStream out = new FileOutputStream(SyncNullHyperProperties.class.getClassLoader() + backupName)) {
+                try (FileInputStream in = new FileInputStream(file)) {
+                    properties.load(in);
 
-                properties.load(in);
-                Set<Object> set = properties.keySet();
-                Map<String, Object> map = new HashMap<>();
-                set.forEach((o -> map.put(o.toString(), properties.get(o))));
-
-                removeProp();
-                createProp(map);
-
+                    properties.store(out, null);
+                }
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();

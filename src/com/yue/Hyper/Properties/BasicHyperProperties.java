@@ -463,19 +463,17 @@ public class BasicHyperProperties implements HyperProperties {
      */
     @Override
     public boolean backup() {
-        boolean isClear = clearBackup();
-        if (isClear) {
-            if (backupName != null) {
-                try (FileOutputStream out = new FileOutputStream(BasicHyperProperties.class.getClassLoader() + backupName)) {
-                    try (FileInputStream in = new FileInputStream(file)) {
-                        properties.load(in);
+        clearBackup();
+        if (backupName != null) {
+            try (FileOutputStream out = new FileOutputStream(BasicHyperProperties.class.getClassLoader() + backupName)) {
+                try (FileInputStream in = new FileInputStream(file)) {
+                    properties.load(in);
 
-                        properties.store(out, null);
-                    }
-                    return true;
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    properties.store(out, null);
                 }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return false;
@@ -517,7 +515,7 @@ public class BasicHyperProperties implements HyperProperties {
         if (backupName != null) {
             File file = new File(BasicHyperProperties.class.getClassLoader() + backupName);
 
-            return file.exists() ? file.delete() : false;
+            return file.exists() && file.delete();
         }
         return false;
     }

@@ -473,19 +473,17 @@ public class NullableHyperProperties implements HyperProperties {
      */
     @Override
     public boolean backup() {
-        boolean isClear = clearBackup();
-        if (isClear) {
-            if (backupName != null) {
-                try (FileOutputStream out = new FileOutputStream(NullableHyperProperties.class.getClassLoader() + backupName)) {
-                    try (FileInputStream in = new FileInputStream(file)) {
-                        properties.load(in);
+        clearBackup();
+        if (backupName != null) {
+            try (FileOutputStream out = new FileOutputStream(NullableHyperProperties.class.getClassLoader() + backupName)) {
+                try (FileInputStream in = new FileInputStream(file)) {
+                    properties.load(in);
 
-                        properties.store(out, null);
-                    }
-                    return true;
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    properties.store(out, null);
                 }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return false;
