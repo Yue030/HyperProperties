@@ -25,6 +25,7 @@ public class BasicHyperProperties implements HyperProperties {
      */
     public BasicHyperProperties(File file) {
         setFile(file);
+        initBackupName();
     }
 
     /**
@@ -36,6 +37,7 @@ public class BasicHyperProperties implements HyperProperties {
     public BasicHyperProperties(File file, String key, String value) {
         setFile(file);
         createProp(key, value);
+        initBackupName();
     }
 
     /**
@@ -46,6 +48,7 @@ public class BasicHyperProperties implements HyperProperties {
     public BasicHyperProperties(File file, Map<String, Object> map) {
         setFile(file);
         createProp(map);
+        initBackupName();
     }
 
     /**
@@ -101,6 +104,16 @@ public class BasicHyperProperties implements HyperProperties {
     @Override
     public void setBackupName(String name) {
         this.backupName = name.concat(".properties");
+    }
+
+    /**
+     * init the Backup Name.
+     */
+    @Override
+    public void initBackupName() {
+        if (defaultBackup.getBoolean("backup", false)) {
+            this.backupName = defaultBackupName;
+        }
     }
 
     /**

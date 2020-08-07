@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class NullableHyperProperties implements HyperProperties {
-
     /**
      * File
      */
@@ -24,6 +23,7 @@ public class NullableHyperProperties implements HyperProperties {
      */
     public NullableHyperProperties() {
         setFile(null);
+        initBackupName();
     }
 
     /**
@@ -32,6 +32,7 @@ public class NullableHyperProperties implements HyperProperties {
      */
     public NullableHyperProperties(File file) {
         setFile(file);
+        initBackupName();
     }
 
     /**
@@ -108,6 +109,16 @@ public class NullableHyperProperties implements HyperProperties {
     @Override
     public void setBackupName(String name) {
         this.backupName = name.concat(".properties");
+    }
+
+    /**
+     * init the Backup Name.
+     */
+    @Override
+    public void initBackupName() {
+        if (defaultBackup.getBoolean("backup", false)) {
+            this.backupName = defaultBackupName;
+        }
     }
 
     /**

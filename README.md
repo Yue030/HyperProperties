@@ -3,7 +3,7 @@ HyperProperties API。讓Properties更簡單！！！
 
 HyperProperties API. Make Properties to easy!!!
 
-# Version: 3.6
+# Version: 4.0
 
 # HyperProperties Object (HypreProperties 物件)
 BasicHyperProperties (標準版) (Basic Version)
@@ -131,6 +131,28 @@ How to use: File file = HyperProperties.chooseFile();
 
 注意:在使用前，請先使用setBackupName(String name)，這將定義你的備份檔案名稱
 
+==
+
+自4.0開始起，
+
+您可以使用
+
+HyperProperties.backupProperties(File file, String backupName)
+
+HyperProperties.restoreProperties(File file, String backupName)
+
+HyperProperties.deleteBackup(String backupName)
+
+更容易使用備份。
+
+並使用
+
+HyperProperties.setDefaultBackup(boolean isDefaultBackup)
+
+預設值為false
+
+當您在備份properties時，並且沒有設置backup name，你會得到"backup.properties"這個備份檔。
+
 # Properties Backup and Restore
 Since version 2.8
 
@@ -140,11 +162,35 @@ use clearBackup() can delete the backup file.
 
 Note: Before use, you need to use the setBackupName(String name), it will be define your backup file name.
 
+==
+
+Since version 4.0
+
+You can use 
+
+HyperProperties.backupProperties(File file, String backupName)
+
+HyperProperties.restoreProperties(File file, String backupName)
+
+HyperProperties.deleteBackup(String backupName)
+
+More easy to setup backup.
+
+And use
+
+HyperProperties.setDefaultBackup(boolean isDefaultBackup) 
+
+Default value = false;
+
+If you input true, When you backup a properties and not set the backup name
+You will get the "backup.properties".
+
+
 # 製作自己的HyperProperties
 請實作HyperProperties這個界面在你的類別中。
 
 
-你至少需要實做22個Method在你的類別中。
+你至少需要實做23個Method在你的類別中。
 
 
 你也可以實做toString()方法。建議你使用 "return getAll().toString" 來實做。
@@ -159,7 +205,7 @@ Note: Before use, you need to use the setBackupName(String name), it will be def
 # Making own HyperProperties
 Please implements HyperProperties Interface to your class.
 
-You must implement at least 22 methods in your class.
+You must implement at least 23 methods in your class.
 
 You can also override the toString() method. Recommend you using "return getAll().toString" to override the method.
 

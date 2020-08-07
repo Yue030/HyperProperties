@@ -24,6 +24,7 @@ public class SyncNullHyperProperties implements HyperProperties {
      */
     public SyncNullHyperProperties() {
         setFile(null);
+        initBackupName();
     }
 
     /**
@@ -32,6 +33,7 @@ public class SyncNullHyperProperties implements HyperProperties {
      */
     public SyncNullHyperProperties(File file) {
         setFile(file);
+        initBackupName();
     }
 
     /**
@@ -43,6 +45,7 @@ public class SyncNullHyperProperties implements HyperProperties {
     public SyncNullHyperProperties(File file, String key, String value) {
         setFile(file);
         createProp(key, value);
+        initBackupName();
     }
 
     /**
@@ -53,6 +56,7 @@ public class SyncNullHyperProperties implements HyperProperties {
     public SyncNullHyperProperties(File file, Map<String, Object> map) {
         setFile(file);
         createProp(map);
+        initBackupName();
     }
 
     /**
@@ -108,6 +112,16 @@ public class SyncNullHyperProperties implements HyperProperties {
     @Override
     public void setBackupName(String name) {
         this.backupName = name.concat(".properties");
+    }
+
+    /**
+     * init the Backup Name.
+     */
+    @Override
+    public void initBackupName() {
+        if (defaultBackup.getBoolean("backup", false)) {
+            this.backupName = defaultBackupName;
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 /**
  * HyperProperties Properties Object.
  * @author yue
- * @version 2.9
+ * @version 3.0
  */
 package com.yue.Hyper.Properties;
