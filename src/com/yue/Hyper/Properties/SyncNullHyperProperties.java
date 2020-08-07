@@ -100,7 +100,7 @@ public class SyncNullHyperProperties implements HyperProperties {
      * @return String
      */
     @Override
-    public String getBackupName() {
+    public synchronized String getBackupName() {
         return this.backupName;
     }
 
@@ -110,7 +110,7 @@ public class SyncNullHyperProperties implements HyperProperties {
      * @param name Name
      */
     @Override
-    public void setBackupName(String name) {
+    public synchronized void setBackupName(String name) {
         this.backupName = name.concat(".properties");
     }
 
@@ -118,7 +118,7 @@ public class SyncNullHyperProperties implements HyperProperties {
      * init the Backup Name.
      */
     @Override
-    public void initBackupName() {
+    public synchronized void initBackupName() {
         if (defaultBackup.getBoolean("backup", false)) {
             this.backupName = defaultBackupName;
         }
